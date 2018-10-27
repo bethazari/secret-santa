@@ -5,7 +5,7 @@ module.exports = require("async-module")(function(done){
             var mongodbUrl = config.db.url;
             if(mongodbUrl){
                 var mongodb = require("mongodb");
-                mongodb.MongoClient.connect(mongoDbUrl, function(err, db) {
+                mongodb.MongoClient.connect(mongodbUrl, function(err, db) {
                     db.ObjectId = mongodb.ObjectID;
                     done(err, db);
                 });
