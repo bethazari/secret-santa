@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Тайный Санта</title>
+
+    <!-- Bootstrap -->
+    <link href="lib/bootstrap-3.3.6-dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link href="lib/toastr/toastr.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+        <style type="text/css">
+            div[data-page] {
+                display: none;
+            }
+        </style>
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <h2>Привет! Ты попал на сайт Тайного Санты!</h2>
+            </div>
+        </div>
+        <hr />
+        <div data-page="^$">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <h2>Чего ты хочешь?</h2>
+                </div>
+                <div class="col-xs-12 text-center">
+                    <button data-bind="click: _.partial(goto, 'new')" class="btn btn-default">Замутить нового Тайного Санту</button>
+                    <button data-bind="click: _.partial(goto, 'join')" class="btn btn-default">Участвовать в Тайном Санте</button>
+                </div>
+            </div>
+        </div>
+        <div data-page="^new$">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <h2>Замутить нового Тайного Санту</h2>
+                </div>
+                <div class="col-xs-12">
+                    <form data-bind="submit: save">
+                        <div class="form-group">
+                            <label for="members">Введи имена участников через запятую</label>
+                            <input autocomplete="off" data-bind="value: membersInput, valueUpdate: 'afterkeydown'" id="members" type="text" class="form-control" placeholder="Вася, Петя, Коля, Маша, Геннадий">
+                        </div>
+                        <div class="form-group">
+                            <h4 data-bind="foreach: members"><span class="label label-info" data-bind="text: $data"></span> </h4>
+                        </div>
+                        <div class="form-group">
+                            <label for="tabuInput">Введи табу через запятую</label>
+                            <input autocomplete="off" data-bind="value: tabuInput, valueUpdate: 'afterkeydown'" id="tabuInput" type="text" class="form-control" placeholder="Вася <-> Петя, Коля -> Маша">
+                        </div>
+                        <div class="form-group">
+                            <h4 data-bind="foreach: tabu"><span class="label label-danger" data-bind="text: $data[0] + ' -> ' + $data[1]"></span> </h4>
+                        </div>
+                        <div class="form-group text-center">
+                            <button class="btn btn-success">Готово <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div data-page="^created$">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <h2>Новый Тайный Санта замучен!</h2>
+                </div>
+                <div class="col-xs-12 text-center">
+                    <h3>Раздай всем участникам пароли Тайного Санты</h3>
+                    <ul class="list-unstyled" data-bind="foreach: createdMembers">
+                        <li><span data-bind="text: member"></span> - <span data-bind="text: password"></span></li>
+                    </ul>
+                    <button class="btn btn-info" data-bind="click: copy">Скопировать всю нужную инфу в буфер обмена <span class="glyphicon glyphicon-copy" aria-hidden="true"></span></button>
+                    <button class="btn btn-success" data-bind="click: _.partial(goto, '')">Готово <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+                </div>
+            </div>
+        </div>
+        <div data-page="^join$">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <h2>Участвовать в Тайном Санте</h2>
+                </div>
+                <div class="col-xs-12">
+                    <form data-bind="submit: join">
+                        <div class="form-group">
+                            <label for="password">Пароль Тайного Санты</label>
+                            <input autocomplete="off" data-bind="value: password, valueUpdate: 'afterkeydown'" id="password" type="text" class="form-control" placeholder="Пароль тайного санты">
+                        </div>
+                        <div class="form-group text-center">
+                            <button class="btn btn-success">Готово <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div data-page="^join/([^/]+)$">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <h2>Ты присоединился к Тайному санте!</h2>
+                </div>
+                <div class="col-xs-12 text-center">
+                    <h2>
+                        Ты даришь подарочек человеку по имени <span data-bind="text: receiver"></span>!
+                        <br />Наклей его имя на днище упаковки, чтобы никто не видел!
+                    </h2>
+                </div>
+                <div class="col-xs-12 text-center">
+                    <button class="btn btn-success" data-bind="click: _.partial(goto, '')">Готово <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="lib/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+
+    <script src="lib/toastr/toastr.min.js"></script>
+
+    <script src="lib/underscore-1.8.3/underscore-min.js"></script>
+    <script src="lib/knockout-3.4.0/knockout-3.4.0.js"></script>
+
+    <script src="lib/async-computed/async-computed.js"></script>
+
+    <script src="index.js"></script>
+  </body>
+</html>

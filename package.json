@@ -1,0 +1,17 @@
+{
+  "name": "secret-santa",
+  "version": "1.0.0",
+  "dependencies": {
+    "async": "^1.4.2",
+    "body-parser": "^1.13.3",
+    "express": "^4.13.3",
+    "requirejs": "^2.1.20",
+    "underscore": "^1.8.3",
+    "mongodb": "2.0.5",
+    "nedb": "^1.8.0"
+  },
+  "scripts": {
+    "start": "node webapp"
+  },
+  "main": "webapp.js"
+}
