@@ -4,7 +4,7 @@ module.exports = {
         port: process.env.PORT || 5000
     },
     db: {
-        // url: process.env.OPENSHIFT_MONGODB_DB_URL || "mongodb://localhost:27017/secret-santa",
-        nedb: "db"
+        url: "mongodb://secret-santa:qwerty12345@ds145562.mlab.com:45562/secret-santa",
+        //nedb: "db"
     }
 }
